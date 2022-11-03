@@ -2,6 +2,15 @@
 
 ## Setup
 
+```bash
+$ python3.11 -m venv venv
+$ . venv/bin/activate
+$ python -m pip install -U pip wheel
+$ python -m pip install -r requirements-tests.txt
+# optional: check for updates
+# python -m pip list --outdated
+```
+
 ## Hack
 
 ```bash
@@ -10,6 +19,8 @@ $ python -m flake8 secret_santa
 ```
 
 ## Tests
+
+TODO.
 
 ## Run
 
