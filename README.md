@@ -1,5 +1,9 @@
 # Secret Santa
 
+Secret Santa is a simple software used to distribute givers/receivers with optional wishes list.
+
+Its first use case is for Santa (Noël, in France), obviously, and it can also be used at other occasions. Be creative!
+
 ## Setup
 
 ```bash
@@ -19,7 +23,9 @@ $ ./checks.sh
 
 ## Tests
 
-TODO.
+```bash
+$ python -m pytest
+```
 
 ## Run
 
