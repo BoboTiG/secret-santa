@@ -10,6 +10,7 @@ def get_person(people: People, name: str) -> Person | None:
 def generate_message(event: Event, santa: Person, buddy: Person) -> EmailMessage:
     from email.headerregistry import Address
     from email.utils import make_msgid
+
     from jinja2 import Template
 
     template = Template(source=event.description)

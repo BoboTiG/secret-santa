@@ -14,6 +14,7 @@ $ python -m pip install -r requirements-tests.txt
 ## Hack
 
 ```bash
+$ python -m isort -i secret_santa
 $ python -m black secret_santa
 $ python -m flake8 secret_santa
 ```

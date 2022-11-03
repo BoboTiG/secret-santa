@@ -20,6 +20,7 @@ def result_file(file: Path) -> Path:
 
 def save_results(file: Path, event: Event, people: People) -> None:
     from dataclasses import asdict
+
     from yaml import safe_dump
 
     data = {

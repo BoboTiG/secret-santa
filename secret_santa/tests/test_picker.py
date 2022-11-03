@@ -1,4 +1,5 @@
 import pytest
+
 from secret_santa.exceptions import BadDraw, NotEnoughPeople
 from secret_santa.picker import pick_a_buddy, pick_names
 
