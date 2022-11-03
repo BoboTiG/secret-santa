@@ -34,5 +34,5 @@ def pick_names(all_the_people: People) -> People:
         try:
             return draw(all_the_people)
         except BadDraw:
-            print(" !! Invalid draw, new attempt ...")
+            print(" !! Invalid draw, new attempt … ")
     raise RuntimeError()

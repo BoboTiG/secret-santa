@@ -33,7 +33,7 @@ def get_smtp_password() -> str:
     return getpass("SMTP password: ").strip()
 
 
-def get_smtp_details():
+def get_smtp_details():  # pragma: nocover
     import os
 
     environ = os.environ
@@ -43,7 +43,7 @@ def get_smtp_details():
     return hostname, username, password
 
 
-def send_emails(event: Event, people: People) -> None:
+def send_emails(event: Event, people: People) -> None:  # pragma: nocover
     hostname, username, password = get_smtp_details()
     import smtplib
     from time import sleep

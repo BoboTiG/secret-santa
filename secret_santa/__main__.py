@@ -39,7 +39,7 @@ def usage() -> int:
     return 1
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: nocover
     try:
         sys.exit(main(Path(sys.argv[1])))
     except (IndexError, TypeError):
