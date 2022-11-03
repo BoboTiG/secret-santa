@@ -48,7 +48,8 @@ def get_smtp_details(
 def send_emails(
     event: Event,
     people: People,
-    smtp_cls: Type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
+    sleep_sec: float = 1.0,
+    smtp_cls: Type[smtplib.SMTP] = smtplib.SMTP_SSL,
 ) -> None:
     hostname, username, password = get_smtp_details(dict(**os.environ))
 
@@ -58,4 +59,4 @@ def send_emails(
             buddy = get_person(people, santa.buddy)
             msg = generate_message(event, santa, buddy)
             server.sendmail(msg["From"], msg["To"], msg.as_string())
-            sleep(1)
+            sleep(sleep_sec)

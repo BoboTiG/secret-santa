@@ -13,7 +13,7 @@ ENV = {
 }
 
 
-class CustomSMTP(smtplib.SMTP_SSL):
+class CustomSMTP(smtplib.SMTP):
     def __init__(self, host="", **_):
         assert host == ENV["SS_SMTP_HOSTNAME"]
         super().__init__(local_hostname=host)
@@ -38,7 +38,7 @@ def test_main(data, capsys):
     send_emails_orig = emails.send_emails
 
     def send_emails(*args):
-        return send_emails_orig(*args, smtp_cls=CustomSMTP)
+        return send_emails_orig(*args, sleep_sec=0.0, smtp_cls=CustomSMTP)
 
     # First run
     with (
