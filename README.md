@@ -1,5 +1,7 @@
 # Secret Santa
 
+![Pepe Santa](pepe-santa.png)
+
 Secret Santa is a simple software used to distribute givers/receivers with optional wishes list.
 
 Its first use case is for Santa (Noël, in France), obviously, and it can also be used at other occasions. Be creative!
