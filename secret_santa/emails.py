@@ -20,7 +20,8 @@ def generate_message(event: Event, santa: Person, buddy: Person) -> EmailMessage
     msg.set_content(body)
     msg["Subject"] = event.name
     msg["From"] = Address(event.sender, *event.email.split("@"))
-    msg["Errors-To"] = event.email
+    msg["Errors-To"] = msg["From"]
+    msg["Disposition-Notification-To"] = msg["From"]  # For read receipt
     msg["To"] = Address(santa.name, *santa.email.split("@"))
     msg["Message-ID"] = make_msgid()
     return msg
