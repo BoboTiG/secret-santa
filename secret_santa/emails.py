@@ -1,4 +1,12 @@
+import os
+import smtplib
+from email.headerregistry import Address
 from email.message import EmailMessage
+from email.utils import make_msgid
+from time import sleep
+from typing import Dict, Tuple, Type
+
+from jinja2 import Template
 
 from .models import Event, People, Person
 
@@ -8,11 +16,6 @@ def get_person(people: People, name: str) -> Person:
 
 
 def generate_message(event: Event, santa: Person, buddy: Person) -> EmailMessage:
-    from email.headerregistry import Address
-    from email.utils import make_msgid
-
-    from jinja2 import Template
-
     template = Template(source=event.description)
     body = template.render(santa=santa, buddy=buddy)
 
@@ -33,22 +36,23 @@ def get_smtp_password() -> str:
     return getpass("SMTP password: ").strip()
 
 
-def get_smtp_details():  # pragma: nocover
-    import os
-
-    environ = os.environ
-    hostname = environ.get("SS_SMTP_HOSTNAME") or input("SMTP hostname: ").strip()
-    username = environ.get("SS_SMTP_USERNAME") or input("SMTP username: ").strip()
-    password = environ.get("SS_SMTP_PASSWORD") or get_smtp_password()
+def get_smtp_details(
+    environs: Dict[str, str]
+) -> Tuple[str, str, str]:  # pragma: nocover
+    hostname = environs.get("SS_SMTP_HOSTNAME") or input("SMTP hostname: ").strip()
+    username = environs.get("SS_SMTP_USERNAME") or input("SMTP username: ").strip()
+    password = environs.get("SS_SMTP_PASSWORD") or get_smtp_password()
     return hostname, username, password
 
 
-def send_emails(event: Event, people: People) -> None:  # pragma: nocover
-    hostname, username, password = get_smtp_details()
-    import smtplib
-    from time import sleep
+def send_emails(
+    event: Event,
+    people: People,
+    smtp_cls: Type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
+) -> None:
+    hostname, username, password = get_smtp_details(dict(**os.environ))
 
-    with smtplib.SMTP_SSL(hostname) as server:
+    with smtp_cls(host=hostname) as server:
         server.login(username, password)
         for santa in people:
             buddy = get_person(people, santa.buddy)
