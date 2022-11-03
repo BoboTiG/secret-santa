@@ -3,8 +3,8 @@ from email.message import EmailMessage
 from .models import Event, People, Person
 
 
-def get_person(people: People, name: str) -> Person | None:
-    return next((person for person in people if person.name == name), None)
+def get_person(people: People, name: str) -> Person:
+    return next((person for person in people if person.name == name))
 
 
 def generate_message(event: Event, santa: Person, buddy: Person) -> EmailMessage:

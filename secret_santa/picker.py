@@ -13,7 +13,7 @@ def draw(all_the_people: People) -> People:
     return secret_santas
 
 
-def pick_a_buddy(people: People, santa: Person) -> str:
+def pick_a_buddy(people: People, santa: Person) -> Person:
     if not people:
         raise NotEnoughPeople()
 
@@ -35,3 +35,4 @@ def pick_names(all_the_people: People) -> People:
             return draw(all_the_people)
         except BadDraw:
             print(" !! Invalid draw, new attempt ...")
+    raise RuntimeError()

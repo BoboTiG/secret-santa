@@ -7,7 +7,7 @@ from secret_santa.models import Person
 def alice():
     return Person(
         name="Alice",
-        nature="mama",
+        nature="maman",
         email="alice@local.host",
         wishes=["livre"],
         buddy="",

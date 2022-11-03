@@ -12,32 +12,32 @@ def test_generate_message(data):
     event, people = load_data(data)
     assert len(people) > 1
 
-    santa = people[0]
-    buddy = people[1]
+    santa, buddy = people
     santa.buddy = buddy.name
 
-    email = generate_message(event, people, santa)
+    email = generate_message(event, santa, buddy)
     check(email)
-    assert email.count(santa.nature.title()) == 1
-    assert email.count(santa.name) == 1
-    assert email.count(buddy.name) == 1
+
+    body = email.get_content()
+    assert "🤶" in body
+    assert "🎅" not in body
+    assert body.count(santa.nature.title()) == 1
+    assert body.count(santa.name) == 1
+    assert body.count(buddy.name) == 1
 
     buddy.wishes = ["livre"]
-    email = generate_message(event, people, santa)
+    email = generate_message(event, santa, buddy)
     check(email)
-    assert "    - livre" in email
+    assert "    - livre" in email.get_content()
 
     buddy.wishes = ["livre", "poupée gonflable"]
-    email = generate_message(event, people, santa)
+    email = generate_message(event, santa, buddy)
     check(email)
-    assert "    - livre\n    - poupée gonflable" in email
+    assert "    - livre\n    - poupée gonflable" in email.get_content()
 
 
 def test_get_person(alice, bob):
-    people = []
-    assert not get_person(people, "Alice")
-
-    people.append(alice)
+    people = [alice]
     assert get_person(people, "Alice") == alice
 
     people.append(bob)
