@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import List
 
 
-@dataclass
+@dataclass(frozen=True, slots=True)
 class Event:
     name: str
     description: str
@@ -10,7 +10,7 @@ class Event:
     email: str
 
 
-@dataclass
+@dataclass(slots=True)
 class Person:
     name: str
     nature: str
