@@ -26,10 +26,26 @@ class CustomSMTP(smtplib.SMTP):
         assert msg
 
 
-def test_no_data_file(capsys):
-    assert main(["results", "--event", "inexistent.black_hole"]) == 2
-    out, _ = capsys.readouterr()
-    assert "prends inspiration" in out
+def test_init(opened_event):
+    send_emails_orig = emails.send_emails
+    cli_args = ["init", "--event", str(opened_event)]
+
+    def send_emails(*args, **kwargs):
+        return send_emails_orig(*args, **kwargs, sleep_sec=0.0, smtp_cls=CustomSMTP)
+
+    # First run
+    with (
+        patch("secret_santa.emails.send_emails", send_emails),
+        patch("os.environ", ENV),
+    ):
+        assert main(cli_args) == 0
+
+    def true(*_):
+        return True
+
+    # Second run
+    with patch("secret_santa.__main__.has_ended", true):
+        assert main(cli_args) == 1
 
 
 def test_results(opened_event, capsys):

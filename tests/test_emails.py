@@ -1,7 +1,8 @@
 from unittest.mock import patch
 
 from secret_santa import emails
-from secret_santa.emails import generate_message, get_person
+from secret_santa.constants import WEBSITE_URL
+from secret_santa.emails import get_person, init_msg, results_msg
 from secret_santa.models import Person
 from secret_santa.utils import load_data
 
@@ -12,7 +13,22 @@ def check(email: str) -> None:
     assert "\n\n\n" not in email
 
 
-def test_generate_message(alice: Person, bob: Person, ended_event):
+def test_init_msg(alice: Person, bob: Person, ended_event):
+    event, people = load_data(ended_event)
+    assert len(people.keys()) > 1
+
+    body = init_msg(event, people, alice)
+    check(body)
+    assert "Salutations Maman Noël Alice !" in body
+    assert f"{WEBSITE_URL}/{event.hash}/{alice.hash}" in body
+
+    body = init_msg(event, people, bob)
+    check(body)
+    assert "Salutations Papa Noël Bob !" in body
+    assert f"{WEBSITE_URL}/{event.hash}/{bob.hash}" in body
+
+
+def test_results_msg(alice: Person, bob: Person, ended_event):
     event, people = load_data(ended_event)
     assert len(people.keys()) > 1
 
@@ -20,9 +36,8 @@ def test_generate_message(alice: Person, bob: Person, ended_event):
     buddy = people[bob.name]
     santa.buddy = buddy.name
 
-    email = generate_message(event, santa, buddy)
-    check(email)
-    body = email.get_content()
+    body = results_msg(event, people, santa)
+    check(body)
     assert "🤶" in body
     assert "🎅" not in body
     assert body.count(santa.nature.title()) == 1
@@ -30,24 +45,22 @@ def test_generate_message(alice: Person, bob: Person, ended_event):
     assert body.count(buddy.name) == 1
 
     buddy.wishes = ["livre"]
-    email = generate_message(event, santa, buddy)
-    check(email)
-    body = email.get_content()
+    body = results_msg(event, people, santa)
+    check(body)
     assert "À titre d’information" in body
     assert "(ou plusieurs)" not in body
     assert "    - livre" in body
 
     buddy.wishes = ["livre", "poupée gonflable"]
-    email = generate_message(event, santa, buddy)
-    check(email)
-    body = email.get_content()
+    body = results_msg(event, people, santa)
+    check(body)
     assert "(ou plusieurs)" in body
     assert "    - livre\n    - poupée gonflable" in body
 
     buddy.wishes = []
-    email = generate_message(event, santa, buddy)
-    check(email)
-    assert "À titre d’information" not in email.get_content()
+    body = results_msg(event, people, santa)
+    check(body)
+    assert "À titre d’information" not in body
 
 
 def test_get_person(alice: Person, bob: Person):
