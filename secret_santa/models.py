@@ -1,5 +1,6 @@
 from dataclasses import dataclass, fields
-from typing import List
+from hashlib import md5
+from typing import Dict, List
 
 
 @dataclass(frozen=True, slots=True)
@@ -16,6 +17,13 @@ class Event:
                 raise ValueError(f"Event is missing the {field.name!r}!")
         if "@" not in self.email:
             raise ValueError(f"Invalid 'email': {self.email!r}!")
+
+    @property
+    def hash(self) -> str:
+        return md5(f"•{self.name}•".encode()).hexdigest()
+
+    def asdict(self) -> Dict[str, str]:
+        return {field.name: getattr(self, field.name) for field in fields(self)}
 
 
 @dataclass(slots=True)
@@ -36,5 +44,16 @@ class Person:
         if self.nature not in {"maman", "papa"}:
             raise ValueError(f"Invalid 'nature': {self.nature!r}!")
 
+    @property
+    def hash(self) -> str:
+        return md5(f"{self.name}•{self.nature}•{self.email}".encode()).hexdigest()
 
-People = List[Person]
+    def asdict(self) -> Dict[str, str | List[str]]:
+        return {
+            field.name: getattr(self, field.name)
+            for field in fields(self)
+            if field.name != "name"
+        }
+
+
+People = Dict[str, Person]

@@ -7,37 +7,44 @@ from secret_santa.exceptions import BadDraw, NotEnoughPeople
 from secret_santa.models import Person
 
 
-def test_pick_a_buddy(alice, bob):
+def test_pick_a_buddy(alice: Person, bob: Person):
+    people = {}
     with pytest.raises(NotEnoughPeople):
-        picker.pick_a_buddy([], alice)
+        picker.pick_a_buddy(people, alice)
 
+    people[alice.name] = alice
     with pytest.raises(BadDraw):
-        picker.pick_a_buddy([alice], alice)
+        picker.pick_a_buddy(people, alice)
 
-    assert picker.pick_a_buddy([alice, bob], alice) == bob
+    people[bob.name] = bob
+    assert picker.pick_a_buddy(people, alice) == bob
 
 
-def test_pick_names(alice, bob):
-    people = []
+def test_pick_names(alice: Person, bob: Person):
+    people = {}
     with pytest.raises(NotEnoughPeople):
         picker.pick_names(people)
 
-    people.append(alice)
+    people[alice.name] = alice
     with pytest.raises(NotEnoughPeople):
         picker.pick_names(people)
 
-    people.append(bob)
+    people[bob.name] = bob
     secret = picker.pick_names(people)
-    assert len(secret) == 2
-    assert alice in secret
-    assert secret[0].buddy == bob.name
-    assert bob in secret
-    assert secret[1].buddy == alice.name
+    assert len(secret.keys()) == 2
+    assert alice.name in secret
+    assert secret[alice.name].buddy == bob.name
+    assert bob.name in secret
+    assert secret[bob.name].buddy == alice.name
 
 
-def test_picker_bad_draw(alice, bob, capsys):
+def test_picker_bad_draw(alice: Person, bob: Person, capsys):
     draw_orig = picker.draw
     count = 0
+    people = {
+        alice.name: alice,
+        bob.name: bob,
+    }
 
     def bad_draw(*args):
         nonlocal count
@@ -47,11 +54,12 @@ def test_picker_bad_draw(alice, bob, capsys):
         return draw_orig(*args)
 
     with patch("secret_santa.picker.draw", bad_draw):
-        secret_santas = picker.pick_names([alice, bob])
-        assert isinstance(secret_santas, list)
-        assert len(secret_santas) == 2
-        assert isinstance(secret_santas[0], Person)
-        assert isinstance(secret_santas[1], Person)
+        secret_santas = picker.pick_names(people)
+        assert isinstance(secret_santas, dict)
+        assert len(secret_santas.keys()) == 2
+        for name, santa in secret_santas.items():
+            assert isinstance(name, str)
+            assert isinstance(santa, Person)
 
     out, _ = capsys.readouterr()
     assert out.count(" !! Invalid draw, new attempt … ") == 1

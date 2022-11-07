@@ -4,29 +4,23 @@ from typing import Tuple
 from .models import Event, People, Person
 
 
-def load_data(file: Path) -> Tuple[Event, People]:
+def load_data(folder: Path) -> Tuple[Event, People]:
     from yaml import safe_load
 
-    with file.open(encoding="utf-8") as fh:
-        raw = safe_load(fh)
-    event = Event(**raw["event"])
-    people = [Person(**person) for person in raw["people"].values()]
+    with (folder / "event.yml").open(encoding="utf-8") as fh:
+        event = Event(**safe_load(fh))
+    with (folder / "people.yml").open(encoding="utf-8") as fh:
+        people = {
+            name: Person(name, **details) for name, details in safe_load(fh).items()
+        }
     return event, people
 
 
-def result_file(file: Path) -> Path:
-    return file.with_stem(f"{file.stem}-results")
-
-
-def save_results(file: Path, event: Event, people: People) -> None:
-    from dataclasses import asdict
-
+def save_results(folder: Path, people: People) -> None:
     from yaml import safe_dump
 
-    data = {
-        "event": asdict(event),
-        "people": {idx: asdict(person) for idx, person in enumerate(people, start=1)},
-    }
+    data = {name: person.asdict() for name, person in people.items()}
+    file = folder / "people.yml"
     with file.open(mode="w", encoding="utf-8") as fh:
         return safe_dump(
             data, fh, allow_unicode=True, encoding="utf-8", sort_keys=False

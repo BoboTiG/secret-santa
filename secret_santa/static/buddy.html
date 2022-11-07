@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Secret Santa!</title>
+    <meta name="viewport" content="width=device-width, user-scalable=yes" />
+    <link rel="icon" href="/static/favicon.png" id="favicon">
+    <link rel="stylesheet" type="text/css" href="/static/style.css" media="screen" />
+</head>
+
+<body>
+    <h1 class="center">{{ event.name }}</h1>
+    <p class="center"><img src="/static/favicon.png" /></p>
+    <p>
+        <b>{{ person.name}}</b>, bienvenue sur ta page perso pour l’événement à venir.
+        Elle restera accessible jusqu’au 1<sup>er</sup> décembre.
+        <br />
+        <i><b>{{ person.name}}</b>, welcome on your personal page of the upcoming event.</i>
+        <i>It will be available until December 1<sup>st</sup>.</i>
+    </p>
+
+    <fieldset>
+        <legend>🗒</legend>
+        <p>
+            Ici, tu peux mettre à jour tes souhaits (3 max). Cependant, ne t’attends pas à les avoir.
+            Pense à fournir un lien vers un site web quand tu demandes quelque chose de bien spécifique.
+            Pour supprimer un souhait, vide le contenu de la case associée.
+            Enfin, pour valider les changements, clique sur l’icône <button class="ok">👌 OK</button> qui se trouve
+            en-dessous de la liste des souhaits.
+            <br />
+            <i>Here, you can update your wish list (3 max). However, don’t expect to have them.</i>
+            <i>Please provide a website link when you ask for something very specific.</i>
+            <i>To delete a wish, empty the content of the related field.</i>
+            <i>
+                Finally, to validate changes, click on the <button class="ok">👌 OK</button> icon below the wish list.
+            </i>
+        </p>
+
+        <form id="whish-list" method="POST">
+            <ul class="wish-list">
+                <li>
+                    <input type="text" name="wish-0" value="{{ person.wishes[0] if person.wishes else '' }}" />
+                </li>
+                <li>
+                    <input type="text" name="wish-1" value="{{ person.wishes[1] if len(person.wishes) > 1 else '' }}" />
+                </li>
+                <li>
+                    <input type="text" name="wish-2" value="{{ person.wishes[2] if len(person.wishes) > 2 else '' }}" />
+                </li>
+                <li class="last">
+                    <input type="submit" class="ok" value="👌 OK" />
+                </li>
+            </ul>
+        </form>
+    </fieldset>
+</body>
+
+</html>

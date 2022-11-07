@@ -12,7 +12,7 @@ from .models import Event, People, Person
 
 
 def get_person(people: People, name: str) -> Person:
-    return next((person for person in people if person.name == name))
+    return next((person for person in people.values() if person.name == name))
 
 
 def generate_message(event: Event, santa: Person, buddy: Person) -> EmailMessage:
@@ -55,7 +55,7 @@ def send_emails(
 
     with smtp_cls(host=hostname) as server:
         server.login(username, password)
-        for santa in people:
+        for santa in people.values():
             buddy = get_person(people, santa.buddy)
             msg = generate_message(event, santa, buddy)
             server.sendmail(msg["From"], msg["To"], msg.as_string())

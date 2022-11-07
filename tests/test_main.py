@@ -3,7 +3,6 @@ from unittest.mock import patch
 
 from secret_santa import emails
 from secret_santa.__main__ import main
-from secret_santa.utils import result_file
 
 ENV = {
     "SS_SMTP_HOSTNAME": "a",
@@ -28,14 +27,14 @@ class CustomSMTP(smtplib.SMTP):
 
 
 def test_no_data_file(capsys):
-    assert main(["init", "--file", "inexistent.black_hole"]) == 2
+    assert main(["results", "--event", "inexistent.black_hole"]) == 2
     out, _ = capsys.readouterr()
     assert "prends inspiration" in out
 
 
-def test_main(data, capsys):
+def test_results(opened_event, capsys):
     send_emails_orig = emails.send_emails
-    cli_args = ["results", "--file", str(data)]
+    cli_args = ["results", "--event", str(opened_event)]
 
     def send_emails(*args):
         return send_emails_orig(*args, sleep_sec=0.0, smtp_cls=CustomSMTP)
@@ -46,7 +45,6 @@ def test_main(data, capsys):
         patch("os.environ", ENV),
     ):
         assert main(cli_args) == 0
-        assert result_file(data).is_file()
         out, _ = capsys.readouterr()
         assert "Les résultats sont déjà connus" not in out
 
@@ -54,3 +52,13 @@ def test_main(data, capsys):
     assert main(cli_args) == 1
     out, _ = capsys.readouterr()
     assert "Les résultats sont déjà connus" in out
+
+
+def test_front():
+    cli_args = ["front"]
+
+    def serve(*_):
+        return 0
+
+    with (patch("secret_santa.server.serve", serve)):
+        assert main(cli_args) == 0

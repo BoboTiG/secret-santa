@@ -1,0 +1,102 @@
+@font-face {
+    font-family: 'Victor Mono Medium';
+    src: local('Victor Mono Medium'), local('VictorMono-Light'), url("/static/VictorMono-Medium.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: 'Victor Mono Medium';
+    font-style: oblique;
+    src: local('Victor Mono Medium Oblique'), local('VictorMono-MediumOblique'), url("/static/VictorMono-MediumOblique.woff2") format("woff2");
+}
+
+::selection {
+    color: #222;
+    background: orange;
+    text-shadow: none;
+}
+
+body {
+    background-color: #1A1C1D;
+    color: #C2FFC2;
+    text-shadow: 0 1px 1px #000;
+    cursor: pointer;
+    width: 50%;
+    filter: drop-shadow(0 1px 1px black);
+    margin: auto;
+    padding: 2em;
+}
+
+body,
+input,
+button {
+    font-family: 'Victor Mono Medium', 'Courier New', Courier, monospace;
+    font-size: 16px;
+
+}
+
+input,
+button {
+    padding: 0.2em;
+    border-radius: 0.25em;
+}
+
+input:not([type=submit]) {
+    background-color: #4C2F00;
+    border: 1px inset #7B5A07;
+    color: #FFDB1A;
+    width: 42em;
+}
+
+.ok {
+    background-color: black;
+    color: #FFDB1A;
+    border: 1px inset #7B5A07;
+    padding: 0.2em 0.5em;
+    cursor: pointer;
+}
+
+fieldset {
+    border-width: 1px;
+    border-color: #999;
+}
+
+li {
+    padding: 0.2em;
+}
+
+i {
+    color: #EBCE98;
+}
+
+legend {
+    color: #fff;
+}
+
+.center {
+    text-align: center;
+}
+
+ul.wish-list li:not(.last) {
+    list-style-type: "🎁 ";
+}
+
+ul.wish-list li.last {
+    list-style-type: "";
+}
+
+
+@media (max-width: 600px) {
+    body {
+        width: 95%;
+        padding: 0.5em;
+        filter: none;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    input:not([type=submit]) {
+        width: 100%
+    }
+}

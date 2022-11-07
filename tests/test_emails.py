@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 from secret_santa import emails
 from secret_santa.emails import generate_message, get_person
+from secret_santa.models import Person
 from secret_santa.utils import load_data
 
 
@@ -11,11 +12,12 @@ def check(email: str) -> None:
     assert "\n\n\n" not in email
 
 
-def test_generate_message(data):
-    event, people = load_data(data)
-    assert len(people) > 1
+def test_generate_message(alice: Person, bob: Person, ended_event):
+    event, people = load_data(ended_event)
+    assert len(people.keys()) > 1
 
-    santa, buddy = people
+    santa = people[alice.name]
+    buddy = people[bob.name]
     santa.buddy = buddy.name
 
     email = generate_message(event, santa, buddy)
@@ -48,11 +50,11 @@ def test_generate_message(data):
     assert "À titre d’information" not in email.get_content()
 
 
-def test_get_person(alice, bob):
-    people = [alice]
+def test_get_person(alice: Person, bob: Person):
+    people = {alice.name: alice}
     assert get_person(people, "Alice") == alice
 
-    people.append(bob)
+    people[bob.name] = bob
     assert get_person(people, "Bob") == bob
 
 
