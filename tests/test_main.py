@@ -1,9 +1,8 @@
 import smtplib
-from pathlib import Path
 from unittest.mock import patch
 
 from secret_santa import emails
-from secret_santa.__main__ import main, usage
+from secret_santa.__main__ import main
 from secret_santa.utils import result_file
 
 ENV = {
@@ -29,13 +28,14 @@ class CustomSMTP(smtplib.SMTP):
 
 
 def test_no_data_file(capsys):
-    assert main(Path("inexistent.black_hole")) == 2
+    assert main(["init", "--file", "inexistent.black_hole"]) == 2
     out, _ = capsys.readouterr()
-    assert "introuvable" in out
+    assert "prends inspiration" in out
 
 
 def test_main(data, capsys):
     send_emails_orig = emails.send_emails
+    cli_args = ["results", "--file", str(data)]
 
     def send_emails(*args):
         return send_emails_orig(*args, sleep_sec=0.0, smtp_cls=CustomSMTP)
@@ -45,18 +45,12 @@ def test_main(data, capsys):
         patch("secret_santa.emails.send_emails", send_emails),
         patch("os.environ", ENV),
     ):
-        assert main(data) == 0
+        assert main(cli_args) == 0
         assert result_file(data).is_file()
         out, _ = capsys.readouterr()
         assert "Les résultats sont déjà connus" not in out
 
     # Second run
-    assert main(data) == 1
+    assert main(cli_args) == 1
     out, _ = capsys.readouterr()
     assert "Les résultats sont déjà connus" in out
-
-
-def test_usage(capsys):
-    usage()
-    out, _ = capsys.readouterr()
-    assert "python -m secret_santa FILE.yml" in out
