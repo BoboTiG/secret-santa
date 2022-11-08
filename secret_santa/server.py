@@ -5,13 +5,10 @@ from pathlib import Path
 from time import sleep
 from typing import List, Tuple
 
-import bottle
 from bottle import redirect, request, route, run, static_file, template
 
 from .models import Event, Person
 from .utils import load_data, save_results
-
-bottle.DEBUG = True
 
 ROOT = Path(__file__).parent
 EVENTS = ROOT.parent / "events"
@@ -81,6 +78,7 @@ def profile(event_hash: str, person_hash: str, events_folder: Path = EVENTS) -> 
             )
         )
         if wishes != person.wishes:
+            print(f">>> {person.name} wishes: {person.wishes} -> {wishes}", flush=True)
             _, people = load_data(folder)
             person.wishes = wishes
             people[person.name] = person

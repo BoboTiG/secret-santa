@@ -26,25 +26,23 @@ def front() -> int:
 
 
 def init(folder: Path) -> int:
-    from .constants import INIT_EVENT_DESC, INIT_EVENT_NAME
-    from .emails import init_msg, send_emails
-    from .utils import load_data
+    from .emails import send_emails
+    from .utils import create_init_emails, load_data
 
     event, people = load_data(folder)
     if has_ended(event, people):
         return 1
 
-    name = INIT_EVENT_NAME.format(event.name)
-    event_init = Event(name, INIT_EVENT_DESC, event.sender, event.email)
+    messages = create_init_emails(event, people)
+    send_emails(messages)
 
-    send_emails(event_init, people, msg_body_fn=init_msg)
     return 0
 
 
 def results(folder: Path) -> int:
     from .emails import send_emails
     from .picker import pick_names
-    from .utils import load_data, save_results
+    from .utils import create_results_emails, load_data, save_results
 
     event, people = load_data(folder)
     if has_ended(event, people):
@@ -52,7 +50,10 @@ def results(folder: Path) -> int:
 
     secret_santas = pick_names(people)
     save_results(folder, secret_santas)
-    send_emails(event, secret_santas)
+
+    messages = create_results_emails(event, people)
+    send_emails(messages)
+
     return 0
 
 
