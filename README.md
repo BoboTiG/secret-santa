@@ -48,7 +48,7 @@ $ python -m secret_santa init --event FOLDER
 Start the server, it should be kept running until December, 1<sup>st</sup>:
 
 ```bash
-$ python -m secret_santa front
+$ python -m secret_santa front >> logs.log 2<&1
 ```
 
 ### Pick Santas, and Send Notifications
