@@ -14,7 +14,7 @@ Requires Python 3.9 (to be compatible with ZEUS).
 $ python -m venv venv
 $ . venv/bin/activate
 $ python -m pip install -U pip wheel
-$ python -m pip install -r requirements-tests.txt
+$ python -m pip install -r requirements.txt
 # optional: check for updates
 # python -m pip list --outdated
 ```
@@ -22,12 +22,14 @@ $ python -m pip install -r requirements-tests.txt
 ## Hack
 
 ```bash
+$ python -m pip install -r requirements-tests.txt
 $ ./checks.sh
 ```
 
 ## Tests
 
 ```bash
+$ python -m pip install -r requirements-tests.txt
 $ python -m pytest
 ```
 
