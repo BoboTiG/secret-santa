@@ -67,13 +67,12 @@ def main(cli_args: List[str]) -> int:
     parser.add_argument("--event", type=folder)
 
     ret, args = 0, parser.parse_args(cli_args)
-    match args.action:
-        case "front":
-            ret = front()
-        case "init":
-            ret = init(args.event)
-        case "results":
-            ret = results(args.event)
+    if args.action == "front":
+        ret = front()
+    elif args.action == "init":
+        ret = init(args.event)
+    elif args.action == "results":
+        ret = results(args.event)
     return ret
 
 

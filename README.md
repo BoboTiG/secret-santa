@@ -8,8 +8,10 @@ Its first use case is for Santa (Noël, in France), obviously, and it can also b
 
 ## Setup
 
+Requires Python 3.9 (to be compatible with ZEUS).
+
 ```bash
-$ python3.11 -m venv venv
+$ python -m venv venv
 $ . venv/bin/activate
 $ python -m pip install -U pip wheel
 $ python -m pip install -r requirements-tests.txt
