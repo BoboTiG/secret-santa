@@ -3,7 +3,7 @@ from hashlib import md5
 from typing import Dict, List
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class Event:
     name: str
     description: str
@@ -26,7 +26,7 @@ class Event:
         return {field.name: getattr(self, field.name) for field in fields(self)}
 
 
-@dataclass(slots=True)
+@dataclass()
 class Person:
     name: str
     nature: str
