@@ -1,6 +1,6 @@
 from dataclasses import dataclass, fields
 from hashlib import md5
-from typing import Dict, List
+from typing import Dict, List, Union
 
 
 @dataclass(frozen=True)
@@ -48,7 +48,7 @@ class Person:
     def hash(self) -> str:
         return md5(f"{self.name}•{self.nature}•{self.email}".encode()).hexdigest()
 
-    def asdict(self) -> Dict[str, str | List[str]]:
+    def asdict(self) -> Dict[str, Union[str, List[str]]]:
         return {
             field.name: getattr(self, field.name)
             for field in fields(self)

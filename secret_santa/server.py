@@ -3,7 +3,7 @@ Simple webserver for the frontend.
 """
 from pathlib import Path
 from time import sleep
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from bottle import redirect, request, route, run, static_file, template
 
@@ -17,7 +17,7 @@ STATIC = ROOT / "static"
 
 def get_person(
     event_hash: str, person_hash: str, events_folder: Path = EVENTS
-) -> Tuple[Path | None, Event | None, Person | None]:
+) -> Tuple[Optional[Path], Optional[Event], Optional[Person]]:
     for data in events_folder.glob("*/event.yml"):
         event, people = load_data(data.parent)
         if event.hash != event_hash:
