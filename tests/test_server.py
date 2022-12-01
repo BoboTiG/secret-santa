@@ -66,7 +66,7 @@ def test_profile_update(opened_event: Path):
             path=f"/{event.hash}/{person.hash}",
             params={
                 "wish-0": "un livre de SF",
-                "wish-2": "un ticket de métro",
+                "wish-2": "un ticket d'métro        ",
             },
         ),
         pytest.raises(HTTPResponse),
@@ -77,8 +77,12 @@ def test_profile_update(opened_event: Path):
     with boddle(method="get", path=f"/{event.hash}/{person.hash}"):
         html = profile(event.hash, person.hash, events_folder=opened_event.parent)
     assert 'name="wish-0" value="un livre de SF"' in html
-    assert 'name="wish-1" value="un ticket de métro"' in html
+    assert 'name="wish-1" value="un ticket d&#039;métro"' in html
     assert 'name="wish-2" value=""' in html
+
+    # Doube check
+    _, people = load_data(opened_event)
+    assert people["Alice"].wishes == ["un livre de SF", "un ticket d'métro"]
 
 
 def test_static():

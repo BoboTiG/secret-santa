@@ -77,6 +77,8 @@ def profile(event_hash: str, person_hash: str, events_folder: Path = EVENTS) -> 
                 ),
             )
         )
+        for idx in range(len(wishes)):
+            wishes[idx] = wishes[idx].strip()
         if wishes != person.wishes:
             print(f">>> {person.name} wishes: {person.wishes} -> {wishes}", flush=True)
             _, people = load_data(folder)
