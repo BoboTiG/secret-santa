@@ -50,14 +50,19 @@ def test_init(opened_event):
 
 def test_results(opened_event, capsys):
     send_emails_orig = emails.send_emails
+    smtp_connexion_orig = emails.smtp_connexion
     cli_args = ["results", "--event", str(opened_event)]
 
-    def send_emails(*args):
-        return send_emails_orig(*args, sleep_sec=0.0, smtp_cls=CustomSMTP)
+    def smtp_connexion():
+        return smtp_connexion_orig(smtp_cls=CustomSMTP)
+
+    def send_emails(*args, **kwargs):
+        return send_emails_orig(*args, sleep_sec=0.0, smtp_cls=CustomSMTP, **kwargs)
 
     # First run
     with (
         patch("secret_santa.emails.send_emails", send_emails),
+        patch("secret_santa.emails.smtp_connexion", smtp_connexion),
         patch("os.environ", ENV),
     ):
         assert main(cli_args) == 0

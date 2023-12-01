@@ -40,7 +40,7 @@ def init(folder: Path) -> int:
 
 
 def results(folder: Path) -> int:
-    from .emails import send_emails
+    from .emails import send_emails, smtp_connexion
     from .picker import pick_names
     from .utils import create_results_emails, load_data, save_results
 
@@ -48,11 +48,14 @@ def results(folder: Path) -> int:
     if has_ended(event, people):
         return 1
 
+    # Early connexion to ensure emails can be sent
+    smtp_conn = next(smtp_connexion())
+
     secret_santas = pick_names(people)
     save_results(folder, secret_santas)
 
     messages = create_results_emails(event, people)
-    send_emails(messages)
+    send_emails(messages, conn=smtp_conn)
 
     return 0
 

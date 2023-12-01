@@ -4,7 +4,7 @@ from email.headerregistry import Address
 from email.message import EmailMessage
 from email.utils import make_msgid
 from time import sleep
-from typing import Dict, List, Tuple, Type
+from typing import Dict, Generator, List, Optional, Tuple, Type
 
 
 def generate_message(
@@ -38,12 +38,20 @@ def get_smtp_details(
 
 def send_emails(
     messages: List[EmailMessage],
-    smtp_cls: Type[smtplib.SMTP] = smtplib.SMTP_SSL,
+    smtp_cls: Type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
     sleep_sec: float = 1.0,
+    conn: Optional[smtplib.SMTP_SSL] = None,
 ) -> None:
+    server = conn or next(smtp_connexion(smtp_cls=smtp_cls))
+    for message in messages:
+        server.sendmail(message["From"], message["To"], message.as_string())
+        sleep(sleep_sec)
+
+
+def smtp_connexion(
+    smtp_cls: Type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
+) -> Generator[smtplib.SMTP_SSL, None, None]:
     hostname, username, password = get_smtp_details(dict(**os.environ))
     with smtp_cls(host=hostname) as server:
         server.login(username, password)
-        for message in messages:
-            server.sendmail(message["From"], message["To"], message.as_string())
-            sleep(sleep_sec)
+        yield server
