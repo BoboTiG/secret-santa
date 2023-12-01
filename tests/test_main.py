@@ -11,7 +11,7 @@ ENV = {
 }
 
 
-class CustomSMTP(smtplib.SMTP):
+class CustomSMTP(smtplib.SMTP_SSL):
     def __init__(self, host="", **_):
         assert host == ENV["SS_SMTP_HOSTNAME"]
         super().__init__(local_hostname=host)

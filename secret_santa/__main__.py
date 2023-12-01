@@ -49,7 +49,7 @@ def results(folder: Path) -> int:
         return 1
 
     # Early connexion to ensure emails can be sent
-    smtp_conn = next(smtp_connexion())
+    smtp_conn = smtp_connexion()
 
     secret_santas = pick_names(people)
     save_results(folder, secret_santas)
