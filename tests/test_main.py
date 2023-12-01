@@ -76,5 +76,5 @@ def test_front():
     def serve(*_):
         return 0
 
-    with (patch("secret_santa.server.serve", serve)):
+    with patch("secret_santa.server.serve", serve):
         assert main(cli_args) == 0
