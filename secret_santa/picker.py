@@ -35,4 +35,5 @@ def pick_names(people: People) -> People:
             return draw(people)
         except BadDraw:
             print(" !! Invalid draw, new attempt … ")
-    raise RuntimeError()
+
+    raise RuntimeError()  # pragma:nocover
