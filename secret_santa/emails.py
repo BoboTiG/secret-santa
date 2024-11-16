@@ -1,15 +1,17 @@
+from __future__ import annotations
+
 import os
 import smtplib
-from email.headerregistry import Address
 from email.message import EmailMessage
 from email.utils import make_msgid
 from time import sleep
-from typing import Dict, List, Optional, Tuple, Type
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from email.headerregistry import Address
 
 
-def generate_message(
-    subject: str, body: str, sender: Address, recipient: Address
-) -> EmailMessage:
+def generate_message(subject: str, body: str, sender: Address, recipient: Address) -> EmailMessage:
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = sender
@@ -27,9 +29,7 @@ def get_smtp_password() -> str:
     return getpass("SMTP password: ").strip()
 
 
-def get_smtp_details(
-    environs: Dict[str, str]
-) -> Tuple[str, str, str]:  # pragma: nocover
+def get_smtp_details(environs: dict[str, str]) -> tuple[str, str, str]:
     hostname = environs.get("SS_SMTP_HOSTNAME") or input("SMTP hostname: ").strip()
     username = environs.get("SS_SMTP_USERNAME") or input("SMTP username: ").strip()
     password = environs.get("SS_SMTP_PASSWORD") or get_smtp_password()
@@ -37,10 +37,11 @@ def get_smtp_details(
 
 
 def send_emails(
-    messages: List[EmailMessage],
-    smtp_cls: Type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
+    messages: list[EmailMessage],
+    *,
+    smtp_cls: type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
     sleep_sec: float = 1.0,
-    conn: Optional[smtplib.SMTP_SSL] = None,
+    conn: smtplib.SMTP_SSL | None = None,
 ) -> None:
     server = conn or smtp_connexion(smtp_cls=smtp_cls)
     for message in messages:
@@ -49,9 +50,7 @@ def send_emails(
     server.close()
 
 
-def smtp_connexion(
-    smtp_cls: Type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL,
-) -> smtplib.SMTP_SSL:
+def smtp_connexion(*, smtp_cls: type[smtplib.SMTP_SSL] = smtplib.SMTP_SSL) -> smtplib.SMTP_SSL:
     hostname, username, password = get_smtp_details(dict(**os.environ))
     server = smtp_cls(host=hostname)
     server.login(username, password)

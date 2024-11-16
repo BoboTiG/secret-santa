@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from secret_santa.constants import WEBSITE_URL
 from secret_santa.models import Event, Person
 from secret_santa.utils import create_init_emails, create_results_emails, load_data
@@ -9,7 +11,7 @@ def check(body: str) -> None:
     assert "\n\n\n" not in body
 
 
-def test_create_init_emails(alice: Person, bob: Person, ended_event):
+def test_create_init_emails(alice: Person, bob: Person, ended_event: Path) -> None:
     event, people = load_data(ended_event)
 
     messages = create_init_emails(event, people)
@@ -25,7 +27,7 @@ def test_create_init_emails(alice: Person, bob: Person, ended_event):
             assert f"{WEBSITE_URL}/{event.hash}/{bob.hash}" in body
 
 
-def test_create_results_emails(alice: Person, bob: Person, ended_event):
+def test_create_results_emails(alice: Person, bob: Person, ended_event: Path) -> None:
     event, people = load_data(ended_event)
 
     people[bob.name].wishes = ["livre", "poupée gonflable"]
@@ -51,7 +53,7 @@ def test_create_results_emails(alice: Person, bob: Person, ended_event):
             assert "À titre d’information" not in body
 
 
-def test_load_data(opened_event):
+def test_load_data(opened_event: Path) -> None:
     event, people = load_data(opened_event)
     assert isinstance(event, Event)
     assert isinstance(people, dict)

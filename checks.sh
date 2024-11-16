@@ -1,6 +1,5 @@
 #!/bin/bash
-
-python -m isort secret_santa tests
-python -m black secret_santa tests
-python -m flake8 secret_santa tests
+set -eu
+python -m ruff format secret_santa tests
+python -m ruff check --fix --unsafe-fixes secret_santa tests
 python -m mypy secret_santa

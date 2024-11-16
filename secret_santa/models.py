@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, fields
-from hashlib import md5
-from typing import Dict, List, Union
+from hashlib import sha256
 
 
 @dataclass(frozen=True)
@@ -14,15 +15,17 @@ class Event:
         """Ensure mandatory fields are set, and with proper data."""
         for field in fields(self):
             if not getattr(self, field.name):
-                raise ValueError(f"Event is missing the {field.name!r}!")
+                msg = f"Event is missing the {field.name!r}!"
+                raise ValueError(msg)
         if "@" not in self.email:
-            raise ValueError(f"Invalid 'email': {self.email!r}!")
+            msg = f"Invalid 'email': {self.email!r}!"
+            raise ValueError(msg)
 
     @property
     def hash(self) -> str:
-        return md5(f"•{self.name}•".encode()).hexdigest()
+        return sha256(f"•{self.name}•".encode()).hexdigest()
 
-    def asdict(self) -> Dict[str, str]:
+    def asdict(self) -> dict[str, str]:
         return {field.name: getattr(self, field.name) for field in fields(self)}
 
 
@@ -31,29 +34,28 @@ class Person:
     name: str
     nature: str
     email: str
-    wishes: List[str]
+    wishes: list[str]
     buddy: str
 
     def __post_init__(self) -> None:
         """Ensure mandatory fields are set, and with proper data."""
-        for attr in {"name", "nature", "email"}:
+        for attr in ("name", "nature", "email"):
             if not getattr(self, attr):
-                raise ValueError(f"{self} is missing the {attr!r}!")
+                msg = f"{self} is missing the {attr!r}!"
+                raise ValueError(msg)
         if "@" not in self.email:
-            raise ValueError(f"Invalid 'email': {self.email!r}!")
+            msg = f"Invalid 'email': {self.email!r}!"
+            raise ValueError(msg)
         if self.nature not in {"maman", "papa"}:
-            raise ValueError(f"Invalid 'nature': {self.nature!r}!")
+            msg = f"Invalid 'nature': {self.nature!r}!"
+            raise ValueError(msg)
 
     @property
     def hash(self) -> str:
-        return md5(f"{self.name}•{self.nature}•{self.email}".encode()).hexdigest()
+        return sha256(f"{self.name}•{self.nature}•{self.email}".encode()).hexdigest()
 
-    def asdict(self) -> Dict[str, Union[str, List[str]]]:
-        return {
-            field.name: getattr(self, field.name)
-            for field in fields(self)
-            if field.name != "name"
-        }
+    def asdict(self) -> dict[str, str | list[str]]:
+        return {field.name: getattr(self, field.name) for field in fields(self) if field.name != "name"}
 
 
-People = Dict[str, Person]
+People = dict[str, Person]

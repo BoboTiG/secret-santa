@@ -9,17 +9,17 @@ from secret_santa.server import homepage, profile, static
 from secret_santa.utils import load_data
 
 
-def sleep(_) -> None:
+def sleep(_: float) -> None:
     return
 
 
-def test_homepage():
+def test_homepage() -> None:
     with patch("secret_santa.server.sleep", sleep), boddle():
         html = homepage()
     assert "<b>Ou</b> alors, l’événement est terminé" in html
 
 
-def test_profile_incorrect_event(opened_event: Path):
+def test_profile_incorrect_event(opened_event: Path) -> None:
     with (
         patch("secret_santa.server.sleep", sleep),
         boddle(method="get", path="/event_hash/person_hash"),
@@ -28,7 +28,7 @@ def test_profile_incorrect_event(opened_event: Path):
         profile("event_hash", "person_hash", events_folder=opened_event.parent)
 
 
-def test_profile_incorrect_person(opened_event: Path):
+def test_profile_incorrect_person(opened_event: Path) -> None:
     event, _ = load_data(opened_event)
     with (
         patch("secret_santa.server.sleep", sleep),
@@ -38,7 +38,7 @@ def test_profile_incorrect_person(opened_event: Path):
         profile(event.hash, "person_hash", events_folder=opened_event.parent)
 
 
-def test_profile_ended_event(ended_event: Path):
+def test_profile_ended_event(ended_event: Path) -> None:
     event, people = load_data(ended_event)
     person = people["Alice"]
     with (
@@ -49,7 +49,7 @@ def test_profile_ended_event(ended_event: Path):
         profile(event.hash, person.hash, events_folder=ended_event.parent)
 
 
-def test_profile_show(opened_event: Path):
+def test_profile_show(opened_event: Path) -> None:
     event, people = load_data(opened_event)
     person = people["Alice"]
     with (
@@ -60,7 +60,7 @@ def test_profile_show(opened_event: Path):
     assert "<b>Alice</b>, bienvenue sur ta page perso" in html
 
 
-def test_profile_update(opened_event: Path):
+def test_profile_update(opened_event: Path) -> None:
     event, people = load_data(opened_event)
     person = people["Alice"]
 
@@ -81,7 +81,7 @@ def test_profile_update(opened_event: Path):
             path=f"/{event.hash}/{person.hash}",
             params={
                 "wish-0": "un livre de SF",
-                "wish-2": "un ticket d'métro        ",
+                "wish-2": "  un ticket d'métro        ",
             },
         ),
         pytest.raises(HTTPResponse),
@@ -103,7 +103,7 @@ def test_profile_update(opened_event: Path):
     assert people["Alice"].wishes == ["un livre de SF", "un ticket d'métro"]
 
 
-def test_static():
+def test_static() -> None:
     with boddle(method="get", params={"file": "style.css"}):
         response = static("style.css")
     assert response.status_code == 200

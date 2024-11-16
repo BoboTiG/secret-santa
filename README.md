@@ -8,15 +8,13 @@ Its first use case is for Santa (Noël, in France), obviously, and it can also b
 
 ## Setup
 
-Requires Python 3.9 (to be compatible with ZEUS).
+Requires Python 3.9 minimum.
 
 ```bash
-$ python -m venv venv
+$ python3.9 -m venv venv
 $ . venv/bin/activate
-$ python -m pip install -U pip wheel
+$ python -m pip install -U pip
 $ python -m pip install -r requirements.txt
-# optional: check for updates
-# python -m pip list --outdated
 ```
 
 ## Hack
@@ -35,7 +33,7 @@ $ python -m pytest
 
 ## Run
 
-### Advert People
+### 1) Advert People
 
 Send an email to all buddies with a link to the website so that they can add/update their wishes list, if any:
 
@@ -43,7 +41,7 @@ Send an email to all buddies with a link to the website so that they can add/upd
 $ python -m secret_santa init --event FOLDER
 ```
 
-### Wait for People
+### 2) Wait for People
 
 Start the server, it should be kept running until December, 1<sup>st</sup>:
 
@@ -51,7 +49,7 @@ Start the server, it should be kept running until December, 1<sup>st</sup>:
 $ python -m secret_santa front >> logs.log 2<&1
 ```
 
-### Pick Santas, and Send Notifications
+### 3) Pick Santas, and Send Notifications
 
 Optionally, setup those environment variables:
 

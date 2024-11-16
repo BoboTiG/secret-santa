@@ -1,0 +1,63 @@
+[tool.mypy]
+# Ensure we know what we do
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unused_configs = true
+
+# Imports management
+ignore_missing_imports = true
+follow_imports = "skip"
+
+# Ensure full coverage
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+
+# Restrict dynamic typing (a little)
+# e.g. `x: List[Any]` or x: List`
+disallow_any_generics = true
+
+strict_equality = true
+
+[tool.pytest.ini_options]
+pythonpath = "src"
+addopts = """
+    --cov-report=term-missing:skip-covered
+    --cov=secret_santa
+    --no-cov-on-fail
+    --showlocals
+    --show-capture=stdout
+    -r fE
+    -vvv
+"""
+
+[tool.ruff]
+line-length = 120
+indent-width = 4
+target-version = "py39"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.ruff.lint]
+extend-select = ["ALL"]
+ignore = [
+    "COM812",   # conflict
+    "D",        # docs
+    "ISC001",   # conflict
+    "PLR2004",  # magic value used in comparison
+    "RUF001",   # string contains ambiguous `’`
+    "T201",     # print()
+]
+fixable = ["ALL"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "ANN401",
+    "D",
+    "E501",
+    "S101",
+]

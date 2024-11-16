@@ -1,8 +1,11 @@
+from __future__ import annotations
+
 from argparse import ArgumentParser
 from pathlib import Path
-from typing import List
+from typing import TYPE_CHECKING
 
-from .models import Event, People
+if TYPE_CHECKING:
+    from secret_santa.models import Event, People
 
 
 def has_ended(event: Event, people: People) -> bool:
@@ -64,7 +67,7 @@ def folder(name: str) -> Path:
     return Path(name or "placeholder")
 
 
-def main(cli_args: List[str]) -> int:
+def main(cli_args: list[str]) -> int:
     parser = ArgumentParser(description="Secret Santa!", allow_abbrev=False)
     parser.add_argument("action", type=str, choices=["front", "init", "results"])
     parser.add_argument("--event", type=folder)

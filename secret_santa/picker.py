@@ -1,5 +1,11 @@
-from .exceptions import BadDraw, NotEnoughPeople
-from .models import People, Person
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from secret_santa.exceptions import BadDrawError, NotEnoughPeopleError
+
+if TYPE_CHECKING:
+    from secret_santa.models import People, Person
 
 
 def draw(all_the_people: People) -> People:
@@ -15,25 +21,25 @@ def draw(all_the_people: People) -> People:
 
 def pick_a_buddy(people: People, santa: Person) -> Person:
     if not people:
-        raise NotEnoughPeople()
+        raise NotEnoughPeopleError
 
     people = {name: person for name, person in people.items() if name != santa.name}
     if not people:
-        raise BadDraw()
+        raise BadDrawError
 
     from random import choice
 
-    return choice(list(people.values()))
+    return choice(list(people.values()))  # noqa: S311
 
 
 def pick_names(people: People) -> People:
     if len(people.keys()) < 2:
-        raise NotEnoughPeople()
+        raise NotEnoughPeopleError
 
     while "picking":
         try:
             return draw(people)
-        except BadDraw:
+        except BadDrawError:  # noqa: PERF203
             print(" !! Invalid draw, new attempt … ")
 
-    raise RuntimeError()  # pragma:nocover
+    raise RuntimeError

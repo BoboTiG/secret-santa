@@ -7,4 +7,4 @@ C’est le début des hostilités, et je t’invite à aller sur cette page pour
 
 La suite début décembre,
 La bise 💋
-"""  # noqa:E501
+"""  # noqa: E501

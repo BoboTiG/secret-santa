@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 
 from secret_santa.models import Person
@@ -21,7 +23,7 @@ description: |
   La bise 💋
 sender: Zed
 email: zed@localhost
-"""  # noqa:E501
+"""
 PEOPLE_DATA_OPENED = """
 Alice:
   nature: maman
@@ -54,7 +56,7 @@ description: |
   La bise 💋
 sender: Zed
 email: zed@localhost
-"""  # noqa:E501
+"""
 PEOPLE_DATA_ENDED = """Alice:
   nature: maman
   email: alice@localhost
@@ -68,25 +70,25 @@ Bob:
 """
 
 
-@pytest.fixture(scope="function")
-def ended_event(tmp_path):
+@pytest.fixture
+def ended_event(tmp_path: Path) -> Path:
     (tmp_path / "event.yml").write_text(EVENT_DATA_ENDED)
     (tmp_path / "people.yml").write_text(PEOPLE_DATA_ENDED)
     return tmp_path
 
 
-@pytest.fixture(scope="function")
-def opened_event(tmp_path):
+@pytest.fixture
+def opened_event(tmp_path: Path) -> Path:
     (tmp_path / "event.yml").write_text(EVENT_DATA_OPENED)
     (tmp_path / "people.yml").write_text(PEOPLE_DATA_OPENED)
     return tmp_path
 
 
 @pytest.fixture(scope="session")
-def alice():
+def alice() -> Person:
     return Person("Alice", "maman", "alice@localhost", [], None)
 
 
 @pytest.fixture(scope="session")
-def bob():
+def bob() -> Person:
     return Person("Bob", "papa", "bob@localhost", [], None)

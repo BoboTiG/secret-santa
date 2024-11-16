@@ -1,6 +1,6 @@
-class BadDraw(RuntimeError):
+class BadDrawError(RuntimeError):
     pass
 
 
-class NotEnoughPeople(ValueError):
+class NotEnoughPeopleError(ValueError):
     pass

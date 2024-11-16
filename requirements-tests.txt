@@ -1,9 +1,7 @@
 -r requirements.txt
-black
-boddle
-flake8
-isort
-mypy
-pytest
-pytest-cov
+boddle==0.2.9
+mypy==1.13.0
+pytest==8.3.3
+pytest-cov==6.0.0
+ruff==0.7.4
 types-PyYAML
