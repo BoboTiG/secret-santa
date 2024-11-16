@@ -1,4 +1,6 @@
+from collections.abc import Generator
 from pathlib import Path
+from shutil import rmtree
 
 import pytest
 
@@ -71,24 +73,32 @@ Bob:
 
 
 @pytest.fixture
-def ended_event(tmp_path: Path) -> Path:
+def ended_event(tmp_path: Path) -> Generator[Path]:
     (tmp_path / "event.yml").write_text(EVENT_DATA_ENDED)
     (tmp_path / "people.yml").write_text(PEOPLE_DATA_ENDED)
-    return tmp_path
+
+    try:
+        yield tmp_path
+    finally:
+        rmtree(tmp_path)
 
 
 @pytest.fixture
-def opened_event(tmp_path: Path) -> Path:
+def opened_event(tmp_path: Path) -> Generator[Path]:
     (tmp_path / "event.yml").write_text(EVENT_DATA_OPENED)
     (tmp_path / "people.yml").write_text(PEOPLE_DATA_OPENED)
-    return tmp_path
+
+    try:
+        yield tmp_path
+    finally:
+        rmtree(tmp_path)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def alice() -> Person:
     return Person("Alice", "maman", "alice@localhost", [], None)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def bob() -> Person:
     return Person("Bob", "papa", "bob@localhost", [], None)
