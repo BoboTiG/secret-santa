@@ -91,7 +91,7 @@ Bob:
 
 Add as many entries as people doing the event. Adapt the *nature* depending on the person ("papa" for a man, or "maman" for a woman).
 
-You are good to start the event!
+You are good to kickoff the event!
 
 ### First, Advert People
 
