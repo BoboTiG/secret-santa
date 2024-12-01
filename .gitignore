@@ -1,7 +1,9 @@
 # Files
 .coverage
+*.log
 
 # Folders
+events/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
