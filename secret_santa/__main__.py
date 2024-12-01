@@ -82,7 +82,7 @@ def main(cli_args: list[str]) -> int:
     return ret
 
 
-if __name__ == "__main__":  # pragma: nocover
+if __name__ == "__main__":
     import contextlib
     import sys
 
