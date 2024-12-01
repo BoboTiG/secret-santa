@@ -4,7 +4,7 @@
 
 Secret Santa is a simple software used to distribute givers/receivers with optional wish list.
 
-Its first use case is for Santa (Noël, in France), obviously, and it can also be used at other occasions. Be creative!
+Its first use case is for Santa ("Noël" in France), obviously, and it can also be used at other occasions. Be creative!
 
 ## Setup
 
@@ -33,7 +33,7 @@ $ python -m pytest
 
 ## Run
 
-### 1) Advert People
+### First, Advert People
 
 Send an email to all buddies with a link to the website so that they can add/update their wishes list, if any:
 
@@ -41,7 +41,7 @@ Send an email to all buddies with a link to the website so that they can add/upd
 $ python -m secret_santa init --event FOLDER
 ```
 
-### 2) Wait for People
+### Second, Wait for People
 
 Start the server, it should be kept running until December, 1<sup>st</sup>:
 
@@ -49,7 +49,7 @@ Start the server, it should be kept running until December, 1<sup>st</sup>:
 $ python -m secret_santa front >> logs.log 2<&1
 ```
 
-### 3) Pick Santas, and Send Notifications
+### Finally, Pick Santa, and Send Notifications
 
 Optionally, setup those environment variables:
 
@@ -65,4 +65,4 @@ Then it is a simple as:
 $ python -m secret_santa results --event FOLDER
 ```
 
-Note that you can use the command again to display results only, emails will not be sent again.
+Note that you can use the command again to only display results, emails will not be sent again.
