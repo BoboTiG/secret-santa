@@ -8,8 +8,10 @@ from hashlib import sha256
 class Event:
     name: str
     description: str
-    sender: str
-    email: str
+    manager_email_name: str
+    manager_email_id: str
+    kickoff_email_title: str
+    kickoff_email_body: str
 
     def __post_init__(self) -> None:
         """Ensure mandatory fields are set, and with proper data."""
@@ -17,8 +19,8 @@ class Event:
             if not getattr(self, field.name):
                 msg = f"Event is missing the {field.name!r}!"
                 raise ValueError(msg)
-        if "@" not in self.email:
-            msg = f"Invalid 'email': {self.email!r}!"
+        if "@" not in self.manager_email_id:
+            msg = f"Invalid 'email': {self.manager_email_id!r}!"
             raise ValueError(msg)
 
     @property

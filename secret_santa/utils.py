@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING
 
 from jinja2 import Template
 
-from secret_santa.constants import INIT_EVENT_DESC, INIT_EVENT_NAME
 from secret_santa.emails import generate_message
 from secret_santa.models import Event, People, Person
 
@@ -15,9 +14,9 @@ if TYPE_CHECKING:
 
 
 def create_init_emails(event: Event, people: People) -> list[EmailMessage]:
-    template = Template(source=INIT_EVENT_DESC)
-    subject = INIT_EVENT_NAME.format(event.name)
-    sender = Address(event.sender, *event.email.split("@"))
+    template = Template(source=event.kickoff_email_body)
+    subject = event.kickoff_email_title.format(event.name)
+    sender = Address(event.manager_email_name, *event.manager_email_id.split("@"))
     messages: list[EmailMessage] = []
 
     for santa in people.values():
@@ -32,7 +31,7 @@ def create_init_emails(event: Event, people: People) -> list[EmailMessage]:
 def create_results_emails(event: Event, people: People) -> list[EmailMessage]:
     template = Template(source=event.description)
     subject = event.name
-    sender = Address(event.sender, *event.email.split("@"))
+    sender = Address(event.manager_email_name, *event.manager_email_id.split("@"))
     messages: list[EmailMessage] = []
 
     for santa in people.values():

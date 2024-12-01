@@ -60,8 +60,16 @@ description: |
   Bonne chasse aux cadeaux, et ne perd pas un rein dans l’histoire : l’important est de prendre du bon temps entre nous ❤
 
   La bise 💋
-sender: Alice
-email: alice@example.org
+manager_email_name: Alice
+manager_email_id: alice@example.org
+kickoff_email_title: "🌠 Top départ ! {}"
+kickoff_email_body: |
+  Salutations {{ santa.nature.title() }} Noël {{ santa.name }} !
+
+  C’est le début des hostilités, et je t’invite à aller sur cette page pour remplir ta liste des souhaits : https://secret-santa.example.org/{{ event.hash }}/{{ santa.hash }}
+
+  La suite début décembre,
+  La bise 💋
 ```
 
 Finally, create the event's people file (`noel-2024/people.yml`):
@@ -87,8 +95,6 @@ You are good to start the event!
 
 ### First, Advert People
 
-Adapt the email template in [`constants.py`](secret_santa/constants.py).
-
 Send an email to all buddies with a link to the website so that they can add/update their wishes list, if any:
 
 ```bash
@@ -97,8 +103,6 @@ python -m secret_santa init --event FOLDER
 ```
 
 ### Second, Wait for People
-
-Adapt the website URL in [`constants.py`](secret_santa/constants.py).
 
 Start the server, it should be kept running until December, 1<sup>st</sup>:
 

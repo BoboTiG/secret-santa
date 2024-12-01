@@ -1,13 +1,12 @@
 from pathlib import Path
 
-from secret_santa.constants import WEBSITE_URL
 from secret_santa.models import Event, Person
 from secret_santa.utils import create_init_emails, create_results_emails, load_data
 
 
 def check(body: str) -> None:
-    assert "{{" not in body
-    assert "}}" not in body
+    assert "{" not in body
+    assert "}" not in body
     assert "\n\n\n" not in body
 
 
@@ -19,12 +18,14 @@ def test_create_init_emails(alice: Person, bob: Person, ended_event: Path) -> No
         body = message.get_content()
         check(body)
 
+        assert message["Subject"] == "🌠 Top départ ! [2021] Noël au moulin !"
+
         if alice.name in message["To"]:
             assert "Salutations Maman Noël Alice !" in body
-            assert f"{WEBSITE_URL}/{event.hash}/{alice.hash}" in body
+            assert f"/{event.hash}/{alice.hash}" in body
         else:
             assert "Salutations Papa Noël Bob !" in body
-            assert f"{WEBSITE_URL}/{event.hash}/{bob.hash}" in body
+            assert f"/{event.hash}/{bob.hash}" in body
 
 
 def test_create_results_emails(alice: Person, bob: Person, ended_event: Path) -> None:
@@ -36,6 +37,8 @@ def test_create_results_emails(alice: Person, bob: Person, ended_event: Path) ->
     for message in messages:
         body = message.get_content()
         check(body)
+
+        assert message["Subject"] == "[2021] Noël au moulin !"
 
         assert body.count(alice.name) == 1
         assert body.count(bob.name) == 1

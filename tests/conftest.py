@@ -23,8 +23,16 @@ description: |
   Bonne chasse aux cadeaux, et ne perd pas un rein dans l’histoire : l’important est de prendre du bon temps entre nous ❤
 
   La bise 💋
-sender: Zed
-email: zed@localhost
+manager_email_name: Zed
+manager_email_id: zed@localhost
+kickoff_email_title: "🌠 Top départ ! {}"
+kickoff_email_body: |
+  Salutations {{ santa.nature.title() }} Noël {{ santa.name }} !
+
+  C’est le début des hostilités, et je t’invite à aller sur cette page pour remplir ta liste des souhaits : https://secret-santa.example.org/{{ event.hash }}/{{ santa.hash }}
+
+  La suite début décembre,
+  La bise 💋
 """
 PEOPLE_DATA_OPENED = """
 Alice:
@@ -56,8 +64,16 @@ description: |
   Bonne chasse aux cadeaux, et ne perd pas un rein dans l’histoire : l’important est de prendre du bon temps entre nous ❤
 
   La bise 💋
-sender: Zed
-email: zed@localhost
+manager_email_name: Zed
+manager_email_id: zed@localhost
+kickoff_email_title: "🌠 Top départ ! {}"
+kickoff_email_body: |
+  Salutations {{ santa.nature.title() }} Noël {{ santa.name }} !
+
+  C’est le début des hostilités, et je t’invite à aller sur cette page pour remplir ta liste des souhaits : https://secret-santa.example.org/{{ event.hash }}/{{ santa.hash }}
+
+  La suite début décembre,
+  La bise 💋
 """
 PEOPLE_DATA_ENDED = """Alice:
   nature: maman
