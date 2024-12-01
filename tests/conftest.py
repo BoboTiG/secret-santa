@@ -23,8 +23,8 @@ description: |
   Bonne chasse aux cadeaux, et ne perd pas un rein dans l’histoire : l’important est de prendre du bon temps entre nous ❤
 
   La bise 💋
-manager_email_name: Zed
-manager_email_id: zed@localhost
+manager_name: Zed
+manager_email: zed@localhost
 kickoff_email_title: "🌠 Top départ ! {}"
 kickoff_email_body: |
   Salutations {{ santa.nature.title() }} Noël {{ santa.name }} !
@@ -64,8 +64,8 @@ description: |
   Bonne chasse aux cadeaux, et ne perd pas un rein dans l’histoire : l’important est de prendre du bon temps entre nous ❤
 
   La bise 💋
-manager_email_name: Zed
-manager_email_id: zed@localhost
+manager_name: Zed
+manager_email: zed@localhost
 kickoff_email_title: "🌠 Top départ ! {}"
 kickoff_email_body: |
   Salutations {{ santa.nature.title() }} Noël {{ santa.name }} !

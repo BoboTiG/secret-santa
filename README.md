@@ -60,8 +60,8 @@ description: |
   Bonne chasse aux cadeaux, et ne perd pas un rein dans l’histoire : l’important est de prendre du bon temps entre nous ❤
 
   La bise 💋
-manager_email_name: Alice
-manager_email_id: alice@example.org
+manager_name: Alice
+manager_email: alice@example.org
 kickoff_email_title: "🌠 Top départ ! {}"
 kickoff_email_body: |
   Salutations {{ santa.nature.title() }} Noël {{ santa.name }} !

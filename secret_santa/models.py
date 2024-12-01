@@ -8,8 +8,8 @@ from hashlib import sha256
 class Event:
     name: str
     description: str
-    manager_email_name: str
-    manager_email_id: str
+    manager_name: str
+    manager_email: str
     kickoff_email_title: str
     kickoff_email_body: str
 
@@ -19,8 +19,8 @@ class Event:
             if not getattr(self, field.name):
                 msg = f"Event is missing the {field.name!r}!"
                 raise ValueError(msg)
-        if "@" not in self.manager_email_id:
-            msg = f"Invalid 'email': {self.manager_email_id!r}!"
+        if "@" not in self.manager_email:
+            msg = f"Invalid 'email': {self.manager_email!r}!"
             raise ValueError(msg)
 
     @property

@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 def create_init_emails(event: Event, people: People) -> list[EmailMessage]:
     template = Template(source=event.kickoff_email_body)
     subject = event.kickoff_email_title.format(event.name)
-    sender = Address(event.manager_email_name, *event.manager_email_id.split("@"))
+    sender = Address(event.manager_name, *event.manager_email.split("@"))
     messages: list[EmailMessage] = []
 
     for santa in people.values():
@@ -31,7 +31,7 @@ def create_init_emails(event: Event, people: People) -> list[EmailMessage]:
 def create_results_emails(event: Event, people: People) -> list[EmailMessage]:
     template = Template(source=event.description)
     subject = event.name
-    sender = Address(event.manager_email_name, *event.manager_email_id.split("@"))
+    sender = Address(event.manager_name, *event.manager_email.split("@"))
     messages: list[EmailMessage] = []
 
     for santa in people.values():
