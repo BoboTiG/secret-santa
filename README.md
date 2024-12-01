@@ -87,6 +87,8 @@ You are good to start the event!
 
 ### First, Advert People
 
+Adapt the email template in [`constants.py`](secret_santa/constants.py).
+
 Send an email to all buddies with a link to the website so that they can add/update their wishes list, if any:
 
 ```bash
@@ -95,6 +97,8 @@ python -m secret_santa init --event FOLDER
 ```
 
 ### Second, Wait for People
+
+Adapt the website URL in [`constants.py`](secret_santa/constants.py).
 
 Start the server, it should be kept running until December, 1<sup>st</sup>:
 
