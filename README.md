@@ -1,5 +1,7 @@
 # Secret Santa
 
+[![Patreon](https://img.shields.io/badge/Patreon-F96854?style=for-the-badge&logo=patreon&logoColor=white)](https://www.patreon.com/mschoentgen)
+
 ![Pepe Santa](pepe-santa.png)
 
 Secret Santa is a simple software used to distribute givers/receivers with optional wish list.
